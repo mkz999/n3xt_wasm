@@ -365,8 +365,23 @@ function loadSTL(event) {
 
         scene.add(model);
         imported.push(model);
+
+        // Store STL information
+        storeSTLInfo(model);
     };
     reader.readAsArrayBuffer(file);
+}
+
+function storeSTLInfo(model) {
+    const stlInfo = {
+        name: model.name,
+        position: { x: model.position.x, y: model.position.y, z: model.position.z },
+        rotation: { x: THREE.MathUtils.radToDeg(model.rotation.x), y: THREE.MathUtils.radToDeg(model.rotation.y), z: THREE.MathUtils.radToDeg(model.rotation.z) },
+        scale: { x: model.scale.x * 100, y: model.scale.y * 100, z: model.scale.z * 100 }
+    };
+
+    console.log("STL Info:", stlInfo);
+    // Store this information for later use
 }
 
 function centerLayers(layers) {
