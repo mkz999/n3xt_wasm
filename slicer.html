@@ -15,9 +15,10 @@
     <script type="importmap">
         {
             "imports": {
-                "three": "https://unpkg.com/three@0.150.1/build/three.module.js",
-                "three/examples/jsm/loaders/STLLoader": "https://unpkg.com/three@0.150.1/examples/jsm/loaders/STLLoader.js",
-                "three/examples/jsm/controls/OrbitControls": "https://unpkg.com/three@0.150.1/examples/jsm/controls/OrbitControls.js"
+                "three": "./node_modules/three/build/three.module.js",
+                "three/examples/jsm/loaders/STLLoader": "./node_modules/three/examples/jsm/loaders/STLLoader.js",
+                "three/examples/jsm/controls/OrbitControls": "./node_modules/three/examples/jsm/controls/OrbitControls.js",
+                "three/examples/jsm/controls/DragControls": "./node_modules/three/examples/jsm/controls/DragControls.js"
             }
         }
     </script>
@@ -32,7 +33,6 @@
                     <i class="fa-solid fa-arrow-left"></i>
                     Back
                 </a>
-                </nav>
                 <label for="loadSTLButton" class="app-btn">Load STL</label>
                 <input type="file" id="loadSTLButton" accept=".stl">
 
@@ -40,14 +40,20 @@
                 <button class="app-btn" id="drawLayersButton">Draw Layers</button>
                 <button class="app-btn" id="drawPointsButton">Draw Points</button>
 
-
                 <button id="clearButton" class="app-btn app-btn--danger">Clear</button>
             </div>
         </header>
         <canvas class="slicer__canvas" id="slicerCanvas"></canvas>
     </div>
-</body>
 
-<script type="module" src="assets/js/main.js"></script>
+    <div id="transformUI" style="position: absolute; top: 10px; right: 10px; background-color: white; padding: 10px; border: 1px solid #ccc; border-radius: 5px; display: none;">
+        <label>Scale: <input type="number" id="scaleInput" value="100" style="width: 50px;"></label><br>
+        <label>Rotation X: <input type="number" id="rotationXInput" value="0" style="width: 50px;"></label><br>
+        <label>Rotation Y: <input type="number" id="rotationYInput" value="0" style="width: 50px;"></label><br>
+        <label>Rotation Z: <input type="number" id="rotationZInput" value="0" style="width: 50px;"></label>
+    </div>
+
+    <script type="module" src="assets/js/main.js"></script>
+</body>
 
 </html>

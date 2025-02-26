@@ -1,7 +1,12 @@
-import * as THREE from "three";
-import { STLLoader } from "three/examples/jsm/loaders/STLLoader";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
+import * as THREE from 'three';
+import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { DragControls } from 'three/examples/jsm/controls/DragControls';
 import slicerModule from "./slicer.js";
+
+let scene, camera, renderer, controls, printBed, light, dragControls;
+let imported = [];
+let layers = [];
 
 class Config {
     // Print bed
@@ -259,7 +264,7 @@ function init() {
         RIGHT: THREE.MOUSE.PAN
     };
 
-    printBed = new PrintBed(200, 1);
+    printBed = new PrintBed();
     light = new Light();
 
     printBed.render();
@@ -366,6 +371,18 @@ function loadSTL(event) {
         scene.add(model);
         imported.push(model);
 
+        // Initialize DragControls
+        if (dragControls) {
+            dragControls.dispose();
+        }
+        dragControls = new DragControls(imported, camera, renderer.domElement);
+        dragControls.addEventListener('dragstart', function (event) {
+            controls.enabled = false;
+        });
+        dragControls.addEventListener('dragend', function (event) {
+            controls.enabled = true;
+        });
+
         // Store STL information
         storeSTLInfo(model);
     };
@@ -465,6 +482,13 @@ function selectObject(event) {
     if (intersects.length > 0) {
         const selectedObject = intersects[0].object;
         selectedObject.clicked();
+
+        // Add the selected object to DragControls targets
+        dragControls.transformGroup = true;
+        dragControls.objects = [selectedObject];
+
+        // Show UI for rotation and scaling
+        showTransformUI(selectedObject);
     }
 }
 
@@ -490,13 +514,6 @@ function clearAll() {
 
 
 // -----------------------------------------------------------------------------
-
-
-let scene, camera, renderer, controls, printBed, light;
-let imported = [];
-let layers = [];
-
-init();
 
 
 let slicer;
@@ -573,4 +590,51 @@ document.getElementById("drawPointsButton").addEventListener("click", () => {
         drawPoints(layers)
     }
 });
+
+function showTransformUI(object) {
+    const transformUI = document.getElementById("transformUI");
+    transformUI.style.display = "block";
+
+    document.getElementById("scaleInput").value = object.scale.x * 100;
+    document.getElementById("rotationXInput").value = THREE.MathUtils.radToDeg(object.rotation.x);
+    document.getElementById("rotationYInput").value = THREE.MathUtils.radToDeg(object.rotation.y);
+    document.getElementById("rotationZInput").value = THREE.MathUtils.radToDeg(object.rotation.z);
+
+    document.getElementById("scaleInput").addEventListener("input", (event) => {
+        const scale = event.target.value / 100;
+        object.scale.set(scale, scale, scale);
+        updateSTLInfo(object);
+    });
+
+    document.getElementById("rotationXInput").addEventListener("input", (event) => {
+        const rotationX = THREE.MathUtils.degToRad(event.target.value);
+        object.rotation.x = rotationX;
+        updateSTLInfo(object);
+    });
+
+    document.getElementById("rotationYInput").addEventListener("input", (event) => {
+        const rotationY = THREE.MathUtils.degToRad(event.target.value);
+        object.rotation.y = rotationY;
+        updateSTLInfo(object);
+    });
+
+    document.getElementById("rotationZInput").addEventListener("input", (event) => {
+        const rotationZ = THREE.MathUtils.degToRad(event.target.value);
+        object.rotation.z = rotationZ;
+        updateSTLInfo(object);
+    });
+}
+
+function updateSTLInfo(object) {
+    const stlInfo = {
+        name: object.name,
+        position: { x: object.position.x, y: object.position.y, z: object.position.z },
+        rotation: { x: THREE.MathUtils.radToDeg(object.rotation.x), y: THREE.MathUtils.radToDeg(object.rotation.y), z: THREE.MathUtils.radToDeg(object.rotation.z) },
+        scale: { x: object.scale.x * 100, y: object.scale.y * 100, z: object.scale.z * 100 }
+    };
+
+    console.log("Updated STL Info:", stlInfo);
+}
+
+init();
 
