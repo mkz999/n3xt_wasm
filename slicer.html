@@ -47,10 +47,18 @@
     </div>
 
     <div id="transformUI" style="position: absolute; top: 10px; right: 10px; background-color: white; padding: 10px; border: 1px solid #ccc; border-radius: 5px; display: none;">
-        <label>Scale: <input type="number" id="scaleInput" value="100" style="width: 50px;"></label><br>
-        <label>Rotation X: <input type="number" id="rotationXInput" value="0" style="width: 50px;"></label><br>
-        <label>Rotation Y: <input type="number" id="rotationYInput" value="0" style="width: 50px;"></label><br>
-        <label>Rotation Z: <input type="number" id="rotationZInput" value="0" style="width: 50px;"></label>
+        <div class="transform-group">
+            <label>Scale: <input type="number" id="scaleInput" value="100" style="width: 50px;"></label>
+        </div>
+        <div class="transform-group">
+            <label>Rotation X: <input type="number" id="rotationXInput" value="0" style="width: 50px;"></label>
+            <label>Rotation Y: <input type="number" id="rotationYInput" value="0" style="width: 50px;"></label>
+            <label>Rotation Z: <input type="number" id="rotationZInput" value="0" style="width: 50px;"></label>
+        </div>
+        <div class="transform-group">
+            <label>Position X: <input type="number" id="positionXInput" placeholder="Position X" style="width: 50px;"></label>
+            <label>Position Z: <input type="number" id="positionZInput" placeholder="Position Z" style="width: 50px;"></label>
+        </div>
     </div>
 
     <script type="module" src="assets/js/main.js"></script>

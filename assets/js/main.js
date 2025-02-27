@@ -600,6 +600,9 @@ function showTransformUI(object) {
     document.getElementById("rotationYInput").value = THREE.MathUtils.radToDeg(object.rotation.y);
     document.getElementById("rotationZInput").value = THREE.MathUtils.radToDeg(object.rotation.z);
 
+    document.getElementById("positionXInput").value = object.position.x;
+    document.getElementById("positionZInput").value = object.position.z;
+
     document.getElementById("scaleInput").addEventListener("input", (event) => {
         const scale = event.target.value / 100;
         object.scale.set(scale, scale, scale);
@@ -621,6 +624,18 @@ function showTransformUI(object) {
     document.getElementById("rotationZInput").addEventListener("input", (event) => {
         const rotationZ = THREE.MathUtils.degToRad(event.target.value);
         object.rotation.z = rotationZ;
+        updateSTLInfo(object);
+    });
+
+    document.getElementById("positionXInput").addEventListener("input", (event) => {
+        const positionX = parseFloat(event.target.value);
+        object.position.x = positionX;
+        updateSTLInfo(object);
+    });
+
+    document.getElementById("positionZInput").addEventListener("input", (event) => {
+        const positionZ = parseFloat(event.target.value);
+        object.position.z = positionZ;
         updateSTLInfo(object);
     });
 }
