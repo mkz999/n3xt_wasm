@@ -1,0 +1,23 @@
+Three.js
+Pomocí three.js jsme vytvořili  pracovní plochu na kterou lze importovat stl soubor a následně s ním pracovat.
+obr1
+uživatel může objekt posouvat otáčet a měnit jeho velikost a může ho smazat. Po vybrání objektu se zobrazí editovací menu.
+obr2
+
+Funkce
+
+Inicializace podložky, kamery, ovládání a renderování proběhne při spuštění souboru a vytvoří pracovní plochu.
+
+let scene, camera, renderer, controls, printBed, light, dragControls;
+
+načítání stl souboru má nastarosti metoda loadSTL() a dovoluje uživateli jednodušše vybrat soubor z počítače.
+
+function loadSTL(event) {
+...
+const reader = new FileReader();
+...
+}
+
+Při vložení souboru se vytvoří stejně pojmenovaný objekt, který ukládá veškeré informace. Když je uživatel spokojen s úpravou následně se posílá do sliceru.
+ukládání má na starost metoda storeSTLInfo()
+
